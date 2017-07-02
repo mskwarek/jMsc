@@ -9,20 +9,25 @@ def parse_config():
     return parser.parse_args()
 
 
-required = [[2014, 1], [2014, 2], [2014, 3], [2014, 4], [2014, 5], [2014, 6], [2014, 7], [2014, 8], [2014, 9],
-            [2014, 10], [2014, 11], [2014, 12],
-            [2015, 1], [2015, 2], [2015, 3], [2015, 4], [2015, 5], [2015, 6], [2015, 7], [2015, 8], [2015, 9],
-            [2015, 10], [2015, 11], [2015, 12],
-            [2016, 1], [2016, 2], [2016, 3], [2016, 4], [2016, 5], [2016, 6], [2016, 7], [2016, 8], [2016, 9],
-            [2016, 10]]
+def write_to_file(user_data):
+    with open(parse_config().dst, 'a') as file:
+        for row in user_data:
+            file.write(';'.join([str(elem) for elem in row]))
+            file.write('\n')
 
 
 def process_user(user_data):
+    required = [[2014, 1], [2014, 2], [2014, 3], [2014, 4], [2014, 5], [2014, 6], [2014, 7], [2014, 8], [2014, 9],
+                [2014, 10], [2014, 11], [2014, 12],
+                [2015, 1], [2015, 2], [2015, 3], [2015, 4], [2015, 5], [2015, 6], [2015, 7], [2015, 8], [2015, 9],
+                [2015, 10], [2015, 11], [2015, 12],
+                [2016, 1], [2016, 2], [2016, 3], [2016, 4], [2016, 5], [2016, 6], [2016, 7], [2016, 8], [2016, 9],
+                [2016, 10]]
     j = 0
     index = 0
     while index < len(required):
         #print index, user_data[j]
-        print j
+        #print j
         if len(user_data) - 1 < j:
             current_entry_year = 0
             current_entry_month = int(user_data[1][4])
@@ -56,14 +61,8 @@ def process_user(user_data):
             #print index, user_data
 
 
-    print j
-    print user_data
-    print user_data[j-1][2]
-    with open(parse_config().dst, 'a') as file:
-        for row in user_data:
-            file.write(';'.join([str(elem) for elem in row]))
-            file.write('\n')
-
+    print "Loop iters: " + str(j)
+    write_to_file(user_data)
 
 if __name__ == '__main__':
     with open(parse_config().src, 'rb') as csvfile:
@@ -72,7 +71,7 @@ if __name__ == '__main__':
         i = 1
         while i < len(rows) - 1:
             user = []
-            print "new user"
+            #print "new user"
             user.append(rows[i])
             i += 1
             while rows[i - 1][2] == rows[i][2]:
